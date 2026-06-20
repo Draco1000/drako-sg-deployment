@@ -1,48 +1,47 @@
 name: Terraform
 
 on:
-push:
-branches:
-- main
-pull_request:
-branches:
-- main
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
 
 permissions:
-id-token: write
-contents: read
+  id-token: write
+  contents: read
 
 jobs:
-terraform:
-runs-on: ubuntu-latest
-
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
-
-  - name: Setup Terraform
-    uses: hashicorp/setup-terraform@v3
-    with:
-      terraform_version: 1.13.0
-
-  - name: Terraform fmt
-    run: terraform fmt -check
-
-  - name: Configure AWS credentials via OIDC
-    uses: aws-actions/configure-aws-credentials@v4
-    with:
-      role-to-assume: arn:aws:iam::376715672737:role/GitHubActionsDeployRole
-      role-session-name: GitHubActions-Backend-${{ github.run_id }}
-      aws-region: eu-west-1
-
-  - name: Terraform init
-    run: terraform init
-
-  - name: Terraform validate
-    run: terraform validate
-
-  - name: Terraform plan
-    run: terraform plan
-
-  - name: Terraform apply
-    run: terraform apply -auto-approve
+  terraform:
+   runs-on: ubuntu-latest
+   steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+  
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.13.0
+  
+    - name: Terraform fmt
+      run: terraform fmt -check
+  
+    - name: Configure AWS credentials via OIDC
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: arn:aws:iam::376715672737:role/GitHubActionsDeployRole
+        role-session-name: GitHubActions-Backend-${{ github.run_id }}
+        aws-region: eu-west-1
+  
+    - name: Terraform init
+      run: terraform init
+  
+    - name: Terraform validate
+      run: terraform validate
+  
+    - name: Terraform plan
+      run: terraform plan
+  
+    - name: Terraform apply
+      run: terraform apply -auto-approve
