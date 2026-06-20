@@ -46,4 +46,3 @@ steps:
 
   - name: Terraform apply
     run: terraform apply -auto-approve
-```
